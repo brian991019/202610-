@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>網際網路怎麼運作？｜1 分鐘觀念神器</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3f6fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #536176;
+      --line: #dfe6f0;
+      --navy: #101b33;
+      --blue: #3569d4;
+      --cyan: #dff4f6;
+      --lavender: #eeeaff;
+      --warm: #fff0d8;
+      --green: #e6f6ec;
+      --shadow: 0 14px 38px rgba(26, 43, 76, .08);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 22px; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-size: 15pt;
+      line-height: 1.85;
+      letter-spacing: .01em;
+    }
+    a { color: var(--blue); }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 56px 24px 48px;
+      background: radial-gradient(circle at 82% 5%, rgba(99, 195, 213, .28), transparent 27%),
+                  radial-gradient(circle at 5% 100%, rgba(121, 118, 231, .24), transparent 35%),
+                  var(--navy);
+      color: #fff;
+    }
+    .hero-inner, main, .footer-inner { width: min(1040px, 100% - 36px); margin-inline: auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 12px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
+      color: #d9e8ff; font-size: 11pt; letter-spacing: .08em;
+    }
+    h1 { margin: 16px 0 12px; font-size: clamp(30pt, 5vw, 43pt); line-height: 1.2; letter-spacing: -.035em; }
+    .hero p { max-width: 780px; margin: 0; color: #d9e2f2; font-size: 16pt; }
+    .hero-decoration { position: absolute; right: max(3vw, calc((100vw - 1040px) / 2)); bottom: -30px; opacity: .14; font-size: 155px; line-height: 1; user-select: none; }
+    main { padding: 34px 0 66px; }
+    .intro {
+      margin: 0 0 28px; padding: 22px 26px; background: var(--paper); border: 1px solid var(--line);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .intro strong { color: #244fa9; }
+    .layout { display: grid; grid-template-columns: 235px minmax(0, 1fr); gap: 24px; align-items: start; }
+    .toc {
+      position: sticky; top: 18px; padding: 20px; border: 1px solid var(--line); border-radius: 18px;
+      background: rgba(255,255,255,.86); backdrop-filter: blur(8px);
+    }
+    .toc h2 { margin: 0 0 10px; font-size: 13pt; line-height: 1.4; }
+    .toc ol { margin: 0; padding-left: 24px; }
+    .toc li { padding: 3px 0; font-size: 11.5pt; line-height: 1.55; }
+    .toc a { color: var(--muted); text-decoration: none; }
+    .toc a:hover, .toc a:focus-visible { color: var(--blue); text-decoration: underline; }
+    .sections { min-width: 0; }
+    .section {
+      margin-bottom: 23px; padding: 30px 32px; border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--paper); box-shadow: var(--shadow); scroll-margin-top: 18px;
+    }
+    .section-head { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 16px; }
+    .number {
+      flex: 0 0 44px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px;
+      background: var(--navy); color: white; font-size: 14pt; font-weight: 750; line-height: 1;
+    }
+    h2 { margin: 0; font-size: 23pt; line-height: 1.35; letter-spacing: -.025em; }
+    h3 { margin: 25px 0 8px; font-size: 17pt; line-height: 1.45; }
+    p { margin: 0 0 15px; }
+    p:last-child { margin-bottom: 0; }
+    .lead { color: var(--muted); }
+    .callout { margin: 18px 0; padding: 17px 20px; border-left: 4px solid var(--blue); border-radius: 0 13px 13px 0; background: #f0f5ff; }
+    .callout p { margin: 0; }
+    .example { margin: 15px 0; padding: 16px 18px; overflow-wrap: anywhere; border: 1px dashed #b9c9e3; border-radius: 14px; background: #f7f9fd; }
+    .example-label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 11pt; font-weight: 750; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; font-size: .9em; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    .pill { display: inline-block; padding: 3px 11px; border-radius: 999px; background: #edf2fb; color: #30476c; font-size: 10.5pt; }
+    .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 18px 0; }
+    .mini-card { padding: 17px; border-radius: 16px; border: 1px solid var(--line); background: #fbfcff; }
+    .mini-card h3 { margin: 0 0 7px; font-size: 15pt; }
+    .mini-card p { margin: 0; font-size: 13pt; line-height: 1.7; }
+    .mini-card.cyan { background: var(--cyan); border-color: #c4e8eb; }
+    .mini-card.purple { background: var(--lavender); border-color: #d9d3ff; }
+    .mini-card.warm { background: var(--warm); border-color: #f4dfb7; }
+    .mini-card.green { background: var(--green); border-color: #ccebd6; }
+    .warning { margin-top: 18px; padding: 15px 18px; border-radius: 14px; background: #fff7e8; border: 1px solid #f2ddb6; color: #704d12; }
+    .warning strong { color: #553807; }
+    .tool-slot { display: none; margin-top: 22px; padding: 18px; border: 1px dashed #aab9ce; border-radius: 14px; color: var(--muted); background: #f8faff; }
+    .site-footer { padding: 25px 0 38px; background: var(--navy); color: #d6dfed; font-size: 11pt; }
+    .site-footer p { margin: 0; }
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; }
+      .toc { position: static; }
+      .toc ol { columns: 2; }
+      .section { padding: 23px 21px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 13.5pt; }
+      .hero { padding: 40px 18px 35px; }
+      .hero-inner, main, .footer-inner { width: min(100% - 26px, 1040px); }
+      .section-head { gap: 11px; }
+      .number { flex-basis: 38px; width: 38px; height: 38px; border-radius: 12px; }
+      h2 { font-size: 20pt; }
+      .toc ol { columns: 1; }
+    }
+  </style>
+  <!-- CSS -->  
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow">1 分鐘觀念神器 · 網路基礎</span>
+      <h1>網際網路怎麼運作？</h1>
+      <p>從光纖、IP 位址與 NAT，到 DNS 和網路安全。理解我們每天使用的網路，究竟如何把資料送到正確的地方。</p>
+    </div>
+    <div class="hero-decoration" aria-hidden="true">⌘</div>
+  </header>
+
+  <main>
+    <div class="intro">
+      <strong>這份頁面目前是內容架構版。</strong>
+      先整理概念與文字，互動小工具、動畫和示範操作之後再加入。各段落保留較完整的說明，方便後續自行刪減。
+    </div>
+
+    <div class="layout">
+      <nav class="toc" aria-label="頁面目錄">
+        <h2>本頁導覽</h2>
+        <ol>
+          <li><a href="#internet">網際網路如何連通</a></li>
+          <li><a href="#protocol">通訊協定與 IP</a></li>
+          <li><a href="#ipv4-ipv6">IPv4 與 IPv6</a></li>
+          <li><a href="#nat">NAT：大樓收發室</a></li>
+          <li><a href="#dns">DNS：把名稱轉成位址</a></li>
+          <li><a href="#security">DNS 與網路安全</a></li>
+          <li><a href="#other">補充</a></li>
+
+        </ol>
+      </nav>
+
+      <div class="sections">
+        <section class="section" id="internet">
+          <div class="section-head">
+            <div class="number">01</div>
+            <div>
+              <h2>網際網路如何連通設備？</h2>
+              <p class="lead">我們平常連上 Wi-Fi 或乙太網路之後，資料究竟是怎麼走到外面的世界？</p>
+            </div>
+          </div>
+          <p>當你連接到可以存取外部網路的 Wi-Fi 或乙太網路時，通常可以存取區域網路內的設備，也可以透過網路服務供應商（ISP）提供的網路，存取其他可經由網際網路連線到達的設備與服務。</p>
+          <p>在這個過程中，電纜與光纖是重要的傳輸媒介。可以把光纖想像成網路世界裡的微血管：它把住家、學校、公司等地方連接到電信業者的網路，再接往區域網路節點、城市間的骨幹網路，以及不同網路之間的互連設施。國際資料還可能經由海底光纜跨越海洋，連接不同國家與洲。</p>
+          <p>如果把整個網路想成循環系統，接入網路就像細小的血管，骨幹網路與國際光纜則像更大型的血管，負責承載大量的資料流量。它們共同構成了全球互相連接的網路。不過，這是幫助理解的簡化比喻；真實的網際網路並不是所有資料都匯入同一個大機房，而是由許多不同的網路、路由器與互連節點共同組成。</p>
+          <div class="callout"><p><strong>核心概念：</strong>網際網路並不是一台中央電腦，而是許多互相連接、能夠交換資料的網路所形成的整體。</p></div>
+          <figure>
+              <img
+                  src="images/principle.png"
+                  alt="家庭設備經由 ISP 連接到遠端網路服務"
+                  class="content-image"
+              >
+              <figcaption>
+                  網際網路連線示意圖。來源:維基百科：https://commons.wikimedia.org/wiki/File:Internet_access_diagram_(english).svg?utm_source=chatgpt.com。
+              </figcaption>
+          </figure>
+        </section>
+
+        <section class="section" id="protocol">
+          <div class="section-head">
+            <div class="number">02</div>
+            <div>
+              <h2>通訊協定與 IP 位址</h2>
+              <p class="lead">要讓不同設備互相溝通，就需要大家遵循共同的規則。</p>
+            </div>
+          </div>
+          <p>要使不同廠牌、不同作業系統的設備能夠互相溝通，必須採用彼此都遵循的通訊協定。IP 是 Internet Protocol（網際網路協定）的縮寫，IP 位址則是網路通訊中用來標示封包來源與目的地的位址資訊。</p>
+          <p>可以把 IP 位址想像成郵寄地址：如果資料要從一台設備送到另一台設備，就需要知道封包要送往哪個目的地；封包中也會帶有來源位址資訊，讓網路設備知道資料從哪裡來。IP 位址與實體住家地址並不完全相同，而且一台設備可能有多個 IP 位址；同一個私人網路裡的位址，也可能在另一個私人網路中重複使用。</p>
+          <div class="two-col">
+            <div class="mini-card cyan">
+              <h3>來源位址</h3>
+              <p>標示這個 IP 封包從哪個 IP 位址送出，供通訊與回應時參考。</p>
+            </div>
+            <div class="mini-card purple">
+              <h3>目的位址</h3>
+              <p>標示封包要送往哪個 IP 位址，路由器會依照路由資訊轉送封包。</p>
+            </div>
+            <figure>
+                <img
+                    src="images/IPV4.jpg"
+                    alt="IPV4"
+                    class="content-image"
+                >
+                <figcaption>
+                    IPV4架構。來源：https://commons.wikimedia.org/wiki/File:Ipv4_address.svg?utm_source=chatgpt.com
+                </figcaption>
+            </figure>
+
+            <figure>
+                <img
+                    src="images/IPV6.jpg"
+                    alt="IPV6"
+                    class="content-image"
+                >
+                <figcaption>
+                    IPV6架構。來源：https://commons.wikimedia.org/wiki/File:Ipv6_address.svg?utm_source=chatgpt.com
+                </figcaption>
+            </figure>
+
+          </div>
+        </section>
+
+        <section class="section" id="ipv4-ipv6">
+          <div class="section-head">
+            <div class="number">03</div>
+            <div>
+              <h2>IPv4 與 IPv6：位址為什麼需要擴充？</h2>
+              <p class="lead">從 32 位元到 128 位元，位址空間大幅增加。</p>
+            </div>
+          </div>
+          <h3>IPv4：由四組十進位數字組成</h3>
+          <p>IPv4 是廣泛使用的 IP 版本之一。它的位址總長度為 32 位元，通常寫成四組以句點分隔的十進位數字。每一組代表 8 位元，也就是一個位元組，因此每組的數值範圍是 0 到 255。</p>
+          <div class="example">
+            <span class="example-label">IPv4 位址範例</span>
+            <span class="mono">169.254.141.80</span>
+            <p style="margin-top:8px">這個例子展示 IPv4 的格式；其中 169.254.0.0/16 屬於鏈路本地位址範圍，通常不會被路由到一般的公網。因此，看到一個格式正確的 IPv4 位址，不代表它就能在全球網際網路上直接被存取。</p>
+          </div>
+          <p>因為 IPv4 有 32 位元，理論上共有 2<sup>32</sup> 種不同的位元組合，也就是約 42.9 億個位址。但其中有些範圍保留給特殊用途，還有一些位址不能直接分配給一般終端設備，因此可自由分配的數量比這個理論值更少。</p>
+          <p>在 IPv4 位址的表示方式中，四組數字各自代表 8 位元；至於網路範圍如何切分，實際上會由網路遮罩與 CIDR 前綴長度等資訊決定，並不是所有位址都固定按照「前面代表國家、後面代表住家」的方式分配。</p>
+
+          <h3>位址不足的問題</h3>
+          <p>早期網際網路的規模遠小於今日，後來隨著個人電腦、手機、伺服器與各種連網設備普及，IPv4 位址逐漸變得吃緊。位址不足的問題早在 1990 年代就已經受到關注；2011 年，全球負責分配 IPv4 位址的 IANA 可自由分配位址池正式耗盡。這並不表示所有 IPv4 位址在那一年突然不能使用，而是可供新的分配使用的剩餘位址已經用盡。</p>
+
+          <h3>IPv6：使用十六進位表示 128 位元位址</h3>
+          <p>為了提供更大的位址空間，IPv6 被設計出來。IPv6 的位址長度是 128 位元，通常寫成由冒號分隔的八組十六進位數字。每組最多可以寫四個十六進位數字，而不是一般十進位的四位數；一個十六進位數字剛好能表示 4 位元，因此每組四個十六進位數字代表 16 位元。</p>
+          <div class="example">
+            <span class="example-label">IPv6 完整位址範例</span>
+            <span class="mono">2001:0db8:0000:0000:0000:ff00:0042:8329</span>
+          </div>
+          <p>IPv6 總共有 2<sup>128</sup> 種可能的位址組合，遠遠大於 IPv4 的 2<sup>32</sup>。這個數量大到難以直覺理解，因此常有人用「即使替每粒沙子配置 IPv6 位址，位址空間仍然非常龐大」來比喻。不過，實際分配仍然受到網路規劃、保留用途與分配政策影響。</p>
+          <p>IPv6 雖然提供了極大的位址空間，但全球轉換需要設備、軟體、網路服務與管理方式一起配合，因此不可能在一夜之間全部完成。現實中的 IPv4 與 IPv6 仍長期並存。</p>
+          <div class="two-col">
+            <div class="mini-card warm">
+              <h3>IPv4</h3>
+              <p>32 位元；通常寫成四組 0～255 的十進位數字，以句點分隔。</p>
+            </div>
+            <div class="mini-card green">
+              <h3>IPv6</h3>
+              <p>128 位元；通常寫成八組十六進位數字，以冒號分隔，位址空間大幅增加。</p>
+            </div>
+            
+          </div>
+        </section>
+
+        <section class="section" id="nat">
+          <div class="section-head">
+            <div class="number">04</div>
+            <div>
+              <h2>NAT：一個公有 IPv4，讓多台設備上網</h2>
+              <p class="lead">用公寓大樓和收發室來理解私有 IP、公有 IP 與連接埠。</p>
+            </div>
+          </div>
+          <p>雖然 IPv6 可以提供非常大量的位址，但由於許多個人、企業和網路服務仍使用 IPv4，全面轉換需要成本，也可能涉及路由器、伺服器、軟體與整體網路環境的調整，因此 IPv4 至今仍在大量使用。</p>
+          <p>其中一個延緩 IPv4 位址消耗的常見技術，是 NAT（Network Address Translation，網路位址轉換）。在家用網路裡，它常搭配連接埠轉換，讓多台使用私有 IPv4 位址的設備，共用同一個公有 IPv4 位址連上外部網路。這類常見作法也稱為 NAPT。</p>
+          <p>可以把這想像成都市裡的一棟公寓大樓：每戶有自己的房號，但整棟大樓對外可能只有一個主要地址。私有 IP 就像大樓裡的房號，例如 <code>192.168.x.x</code> 或 <code>10.x.x.x</code>。不同家庭、學校或公司可以各自使用相同的私有 IP，就像許多棟大樓都可能有「3 樓之 2」這個房號。</p>
+          <p>公有 IP 則是可在全球網際網路中路由的位址。當內部設備發出連往外部網站的連線時，NAT 路由器可以把封包的來源私有 IP 改成大樓對外使用的公有 IP，通常也會調整來源連接埠，並在轉譯表記錄這項對應關係。</p>
+          <div class="example">
+            <span class="example-label">NAT 收發室比喻</span>
+            <p>假設內部某台設備透過路由器連上 Google。路由器在轉譯表裡記下這條連線使用的位址與連接埠對應，當 Google 的回應資料回來時，路由器就能根據紀錄，把資料送回原本建立連線的內部設備。連接埠可以想成收發室用來區分不同信件流向的編號，但它不是單純「分配給 Google 的房號」。</p>
+          </div>
+          <p>這也是為什麼，若一台伺服器位於 NAT 路由器後方，外部設備想要主動連入時，通常不能只知道整棟大樓的公有 IP 就一定找到內部哪台設備、哪個服務。路由器需要有相應的連線狀態或設定，例如連接埠轉發，才能把外部連線導向正確的內部服務。相對地，對一般使用者主動發起的網頁連線，NAT 通常會在連線建立時記錄回傳路徑，因此使用者不必每次都手動設定連接埠轉發。</p>
+          <div class="callout"><p><strong>核心概念：</strong>私有 IP 用於內部網路；公有 IP 用於全球網際網路的路由。NAT／NAPT 讓多台內部設備能共用有限的公有 IPv4 位址，但並沒有真正增加 IPv4 的總位址數量。</p></div>
+          <figure>
+              <img
+                  src="images/NAT.jpg"
+                  alt="NAT"
+                  class="content-image"
+              >
+              <figcaption>
+                  NAT原理圖。來源：https://commons.wikimedia.org/wiki/File:NAPT-en.svg?utm_source=chatgpt.com
+              </figcaption>
+          </figure>
+        </section>
+
+        <section class="section" id="dns">
+          <div class="section-head">
+            <div class="number">05</div>
+            <div>
+              <h2>DNS：把容易記的名稱轉成 IP 位址</h2>
+              <p class="lead">人類記得住網域名稱，但網路連線仍需要取得對應的 IP 位址。</p>
+            </div>
+          </div>
+          <p>DNS 是 Domain Name System（網域名稱系統）的縮寫。它出現的一個重要原因，是網域名稱通常比一長串 IP 位址更容易讓人記憶和使用。例如，人們更容易記住某個網站的網域名稱，而不是每次都背誦它目前使用的 IP 位址。</p>
+          <p>當使用者在瀏覽器輸入網址時，裝置通常需要取得網址中網域名稱所對應的 IP 位址，才能開始與目標服務建立連線。裝置會先查看本機或應用程式的快取；如果沒有可用的紀錄，就會向設定好的 DNS 遞迴解析器提出查詢。這個解析器可能由網路服務供應商提供，也可能是使用者選擇的公用 DNS 服務。</p>
+          <p>DNS 並不是只有一台中央伺服器，而是由分布在各地、負責不同階層與區域的多種 DNS 伺服器組成。若遞迴解析器沒有可用的快取答案，就可以透過 DNS 的階層式架構查詢，例如先向根 DNS 取得下一步線索，再查詢頂級網域 DNS，最後找到負責該網域的權威 DNS 伺服器。取得答案後，解析器再把結果回傳給使用者，並可能依照紀錄的有效時間暫存答案，以便後續查詢更快完成。</p>
+          <div class="callout"><p><strong>核心概念：</strong>DNS 負責把網域名稱解析成相關 DNS 紀錄，例如 IP 位址；它不是直接傳送整個網頁內容的系統。網頁內容仍會透過後續的網路連線取得。</p></div>
+          <figure>
+              <img
+                  src="images/DNS.jpg"
+                  alt="DNS"
+                  class="content-image"
+              >
+              <figcaption>
+                  DNS階層分佈。來源：https://commons.wikimedia.org/wiki/File:Example_of_an_iterative_DNS_resolver.svg?utm_source=chatgpt.com
+              </figcaption>
+          </figure>
+        </section>
+
+        <section class="section" id="security">
+          <div class="section-head">
+            <div class="number">06</div>
+            <div>
+              <h2>DNS 與網路安全：找到網站，不代表網站一定安全</h2>
+              <p class="lead">DNS 查詢、資料傳輸與網站身分驗證，處理的是不同的安全問題。</p>
+            </div>
+          </div>
+          <p>傳統 DNS 查詢通常沒有加密，而且如果缺乏適當的驗證機制，DNS 回應可能遭到偽造或竄改。例如，攻擊者可能透過入侵路由器、修改裝置的 DNS 設定、控制不安全的解析器，或利用其他攻擊方式，讓使用者被導向錯誤的 IP 位址。如果使用者因此進入仿冒的釣魚網站，就可能被誘騙輸入帳號、密碼或其他個人資訊。DNS 劫持或 DNS 欺騙可用來描述其中一些相關攻擊方式，實際情況會依攻擊手法而不同。</p>
+          <h3>DNSSEC：驗證 DNS 資料</h3>
+          <p>DNSSEC（Domain Name System Security Extensions，網域名稱系統安全擴充）是一種利用數位簽章等機制，驗證 DNS 資料來源與完整性的技術。驗證流程成功時，解析器可以確認相關資料符合簽章與信任鏈的要求；如果驗證失敗，資料就不應被當成通過驗證的正確答案。DNSSEC 的主要工作不是加密查詢內容，而是協助偵測資料是否被偽造或竄改。它也不會單獨保證網站內容本身沒有惡意。</p>
+          <h3>DoT 與 DoH：加密 DNS 查詢傳輸</h3>
+          <p>另外兩種相關技術是 DoT（DNS over TLS）與 DoH（DNS over HTTPS）。DoT 透過 TLS 建立加密通道；DoH 則把 DNS 查詢放在 HTTPS 通訊中傳輸。這些技術可以保護使用者裝置到所選 DNS 解析器之間的查詢傳輸，降低中途被旁觀或竄改的風險。不過，它們和 DNSSEC 解決的問題不相同；加密查詢傳輸也不代表解析器一定可信，或解析出的網站一定安全。</p>
+          <h3>HTTPS：保護瀏覽器與網站間的通訊</h3>
+          <p>HTTPS 使用 TLS 保護瀏覽器與網站之間的通訊，降低資料在傳輸過程中被竊聽或竄改的風險，也協助瀏覽器驗證連線所對應的網站網域身分。如果連線的憑證不符合網址、已過期或無法被信任，瀏覽器可能會顯示安全警告，使用者應該先停止操作，而不是忽略警告後繼續輸入敏感資訊。</p>
+          <p>但要特別注意：釣魚網站也可能取得屬於自己網域的有效 HTTPS 憑證。因此，網址有 HTTPS 或鎖頭圖示，並不代表網站一定可靠；使用者仍需要確認網域名稱是否正確、網站來源是否可信，以及自己是否真的預期前往該網站。</p>
+          <div class="two-col">
+            <div class="mini-card cyan">
+              <h3>DNSSEC</h3>
+              <p>重點在 DNS 資料的來源與完整性驗證，協助偵測偽造或竄改。</p>
+            </div>
+            <div class="mini-card purple">
+              <h3>DoT／DoH</h3>
+              <p>重點在裝置到 DNS 解析器之間的查詢傳輸加密。</p>
+            </div>
+            <div class="mini-card green">
+              <h3>HTTPS</h3>
+              <p>重點在瀏覽器與網站之間的通訊保護與網域身分驗證。</p>
+            </div>
+            <div class="mini-card warm">
+              <h3>使用者的判斷</h3>
+              <p>遇到憑證警告時不要輸入敏感資料；更換 DNS 可能有幫助，但不一定能解決所有警告。</p>
+            </div>
+          </div>
+          <p>如果經常遇到憑證警告，原因可能包括網站憑證設定錯誤、裝置日期與時間不正確、連線受到攔截，或其他網路問題，不能直接斷定是所在地區的 DNS 有漏洞。使用者可以選擇信譽良好的公用 DNS 服務，例如 Google Public DNS（<code>8.8.8.8</code>）或 Cloudflare DNS（<code>1.1.1.1</code>），但這不是所有安全問題的通用解法。</p>
+          <div class="callout"><p><strong>核心概念：</strong>DNS 幫助找到目的地，DNSSEC 協助驗證 DNS 資料，DoT／DoH 保護 DNS 查詢傳輸，HTTPS 保護瀏覽器與網站之間的連線。它們互相補充，但不能彼此完全取代。</p></div>
+          <figure>
+              <img
+                  src="images/DNSSEC.jpg"
+                  alt="DNSSEC"
+                  class="content-image"
+              >
+              <figcaption>
+                  DNSSEC安全技術，阻止你進入安全簽證不正確的網站。來源：https://monovm.com/blog/what-is-dnssec/?utm_source=chatgpt.com
+              </figcaption>
+          </figure>
+        </section>
+
+        <!-- 之後可在各章節加入互動小工具、動畫或操作示範。 -->
+      <section class="other" id="other">
+          <div class="section-head">
+            <div class="number">07</div>
+            <div>
+              <h2>其他補充資訊</h2>
+              <p class="lead">原始文檔</p>
+            </div>
+          </div>
+          <p> </p>
+          <p></p>
+          <p></p>
+          <div class="callout"><p><strong>核心概念：</strong>網際網路並不是一台中央電腦，而是許多互相連接、能夠交換資料的網路所形成的整體。</p></div>
+        </section>
+      
+
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>網際網路怎麼運作？｜1 分鐘觀念神器 · 內容架構草稿</p>
+    </div>
+  </footer>
+</body>
+</html>
